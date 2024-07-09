@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+.header {
+    display: flex;
+    align-items: center;
+    background-color: rgb(131, 136, 162);
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.imgHeader {
+    display: flex;
+    justify-content: flex-start;
+    width: 50px;
+    height: 27px;
+}

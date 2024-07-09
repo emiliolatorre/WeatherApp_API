@@ -1,17 +1,29 @@
 import React from "react";
 import './WeatherCard.css'
 
-const WeatherCard = ({ dataItem: { title, desc, status } }) => {
+const WeatherCard = ({ dataItem: { dt_txt, main, weather } }) => {
+
+  let tempMinKelvin = main.temp_min;
+  let tempMinCelsius = tempMinKelvin - 273.15;
+  let tempMinCelsiusRounded = tempMinCelsius.toFixed(2);
+
+  let tempMaxKelvin = main.temp_max;
+  let tempMaxCelsius = tempMaxKelvin - 273.15;
+  let tempMaxCelsiusRounded = tempMaxCelsius.toFixed(2);
+
+  let weatherObj = {...weather}
+  let desc = weatherObj[0].description;
+
+  let icon = weatherObj[0].icon
+  const iconURL = `https://openweathermap.org/img/wn/${icon}@2x.png`
+
   return <article>
     <div className="text-container">
-      <h3>{title}</h3>
+      <h3>{dt_txt}</h3>
       <p>{desc}</p>
-      <p className="status">Status: {status}</p>
-      <div className="button-container">
-        {/* Botón BORRAR, asociado a cada tarea, para poder borrar de manera independiente */}
-        <button className="btnDelete" onClick={deleteCard} >Borrar</button>
-        <button className="btnEdit" onClick={editCard} >Editar</button>
-      </div>
+      <p className="status">Temperatura Min: {tempMinCelsiusRounded} °C</p>
+      <p className="status">Temperatura Max: {tempMaxCelsiusRounded} °C</p>
+      <img src={iconURL} alt="icon" />
     </div>
   </article>;
 };

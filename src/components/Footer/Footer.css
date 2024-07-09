@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    background-color: rgb(131, 136, 162);
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: 40px -30px -30px -30px;
+}
+
+.imgFooter {
+    display: flex;
+    justify-content: flex-start;
+    width: 50px;
+    height: 27px;
+}

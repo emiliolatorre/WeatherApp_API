@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import WeatherCard from "./WeatherCard"; //conectarlo
 import './WeatherList.css'
-import axios from "axios";
+import axios from 'axios'
 
 const APIKey = '82e1e17d4715a2ff66afc117dab644e3';
 // FECTH WEATHER API - Ejercicio 1
@@ -15,60 +15,54 @@ const APIKey = '82e1e17d4715a2ff66afc117dab644e3';
 
 const WeatherList = () => {
 
-  const dataMadrid = axios.get('/user?ID=12345')
-  .then(function (response) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
-
   // ESTADOS / EFFECTS
-  const [items, setItems] = useState(data); //por defecto fetch a Madrid
-  const [value, setValue] = useState({
-    city: 'Madrid'
-  });
+  const [items, setItems] = useState([]); //por defecto fetch a Madrid
+  const [value, setValue] = useState('Madrid');
+  const [cityToPrint, setCityToPrint] = useState('Madrid');
 
   // FUNCIONES
+
+  useEffect(() => {
+    const getWeather = async () => {
+      const resp = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${value}&appid=82e1e17d4715a2ff66afc117dab644e3`);
+      const json = resp.data;
+      const dataMadrid = json.list
+      const cityName = json.city.name
+      setCityToPrint(cityName);
+      setItems(dataMadrid);
+    }
+    getWeather();
+  }, [value]);
+
   const renderItems = () => items.map((item, i) =>
     <WeatherCard key={uuidv4()} dataItem={item} />
   );
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const city = e.target.city.value;
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       // Petición HTTP
+  //       const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${value}&appid=82e1e17d4715a2ff66afc117dab644e3`);
+  //       const json = res.data;
+  //       const dataCity = json.list
 
-    // const newItem = { title, desc, status } FETCH
-    const data = axios.get('/user?ID=12345')
-  .then(function (response) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
+  //       // Guarda en el array de posts el resultado. Procesa los datos
+  //       setValue(dataCity);
+  //     } catch (e) {
+  //       setValue([]) // No pintes nada 
+  //     }
+  //   }
 
-    setItems([...data, newItem])
+  //   fetchData();
+  // }, [value]);
 
-    // // Limpiar el formulario
-    e.target.reset()
+  const handleSubmit = e => {
+    e.preventDefault();
+    const newCity = e.target.city.value;
+    console.log(newCity);
+    setValue(newCity);
+    e.target.reset();
   };
-
-  const handleChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.city]: e.target.value
-    });
-  }
 
 
 
@@ -76,18 +70,17 @@ const WeatherList = () => {
 
   return <section>
 
-    <h1>WeatherApp</h1>
-
     {/* Formulario con input + boton para buscar una ciudad*/}
     <h2>Busca una ciudad</h2>
     <form onSubmit={handleSubmit} className="form">
       <div>
-        <input type="text" name="city" placeholder="Introduce tu Ciudad" onChange={handleChange} />
+        <input type="text" name="city" placeholder="Introduce tu Ciudad" />
       </div>
+      <button className="btnSearch" type="submit">Buscar</button>
     </form>
 
 
-    <h2>Clima de la semana</h2>
+    <h2>{cityToPrint} - Clima de la semana</h2>
     {renderItems()}
   </section>;
 };

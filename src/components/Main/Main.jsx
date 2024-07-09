@@ -1,9 +1,10 @@
 import React from "react";
 import WeatherList from './WeatherList'
+import './Main.css';
 
 const Main = () => {
-  return <main>
-    <h1>Mi To Do List</h1>
+  return <main className="main">
+    <h1>WeatherApp</h1>
     <WeatherList />
   </main>;
 };
