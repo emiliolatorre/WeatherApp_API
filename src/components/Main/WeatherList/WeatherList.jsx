@@ -73,9 +73,7 @@ const WeatherList = () => {
     {/* Formulario con input + boton para buscar una ciudad*/}
     <h2>Busca una ciudad</h2>
     <form onSubmit={handleSubmit} className="form">
-      <div>
-        <input type="text" name="city" placeholder="Introduce tu Ciudad" />
-      </div>
+      <input type="text" name="city" placeholder="Introduce tu Ciudad" />
       <button className="btnSearch" type="submit">Buscar</button>
     </form>
 
