@@ -5,13 +5,6 @@ import './WeatherList.css'
 import axios from 'axios'
 
 const APIKey = '82e1e17d4715a2ff66afc117dab644e3';
-// FECTH WEATHER API - Ejercicio 1
-// api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}
-// MADRID - // https://api.openweathermap.org/geo/1.0/direct?q=Madrid&limit=1&appid=82e1e17d4715a2ff66afc117dab644e3
-
-// FETCH - EXTRA 2 (mi localizacion)
-// capturamos mi localizacion - api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}
-// capturamos lat y lon - api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
 
 const WeatherList = () => {
 
@@ -24,12 +17,16 @@ const WeatherList = () => {
 
   useEffect(() => {
     const getWeather = async () => {
-      const resp = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${value}&appid=82e1e17d4715a2ff66afc117dab644e3`);
-      const json = resp.data;
-      const dataMadrid = json.list
-      const cityName = json.city.name
-      setCityToPrint(cityName);
-      setItems(dataMadrid);
+      try {
+        const resp = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${value}&appid=82e1e17d4715a2ff66afc117dab644e3`);
+        const json = resp.data;
+        const dataMadrid = json.list
+        const cityName = json.city.name
+        setCityToPrint(cityName);
+        setItems(dataMadrid);
+      } catch (error) {
+        setValue([])
+      }
     }
     getWeather();
   }, [value]);
@@ -37,24 +34,6 @@ const WeatherList = () => {
   const renderItems = () => items.map((item, i) =>
     <WeatherCard key={uuidv4()} dataItem={item} />
   );
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       // Petición HTTP
-  //       const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${value}&appid=82e1e17d4715a2ff66afc117dab644e3`);
-  //       const json = res.data;
-  //       const dataCity = json.list
-
-  //       // Guarda en el array de posts el resultado. Procesa los datos
-  //       setValue(dataCity);
-  //     } catch (e) {
-  //       setValue([]) // No pintes nada 
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, [value]);
 
   const handleSubmit = e => {
     e.preventDefault();
